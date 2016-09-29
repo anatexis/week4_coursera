@@ -14,7 +14,7 @@ hist(outcome[, 23]) # pneumonia
 #-------------------------------------------------------------------------------
 ###### Finding the best hospital in a state
 
-best <- function(outcome) {
+best <- function(state,outcome) {
         ## read outcome data
         data <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
         if (outcome == "heart attack") {
@@ -33,4 +33,6 @@ best <- function(outcome) {
 
 best("heart attack")
 
-
+x <- "heart attack"
+y <- as.character(x)
+y
