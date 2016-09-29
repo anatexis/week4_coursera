@@ -16,23 +16,21 @@ hist(outcome[, 23]) # pneumonia
 
 best <- function(outcome) {
         ## read outcome data
-        outcome <- as.character(outcome)
+        data <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
         if (outcome == "heart attack") {
-                outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
-                outcome[, 11] <- as.numeric(outcome[, 11])
+                data[, 11] <- as.numeric(data[, 11])
         }
-        if (outcome == "heart failure") {
-                outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
-                outcome[, 17] <- as.numeric(outcome[, 17])
+        else if (outcome == "heart failure") {
+                data[, 17] <- as.numeric(data[, 17])
         }
-        if (outcome == "pneumonia") {
-                outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
-                outcome[, 23] <- as.numeric(outcome[, 23])
+        else if (outcome == "pneumonia") {
+                data[, 23] <- as.numeric(data[, 23])
         }
         else {
                 message("invalid outcome")
         }
 }
 
-e <- best("pneumonia")
-e
+best("heart attack")
+
+
