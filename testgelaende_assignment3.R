@@ -68,8 +68,11 @@ best <- function(state,outcome) {
         
         ## check that state and outcome are valid
         if (state %in% data$State == FALSE) stop("invalid state")
+        if (outcome %in% c("heart attack", "heart failure", "pneumonia") == F) {
+                stop("invalid outcome")
+        }
         
-        else if (outcome == "heart attack") {
+        if (outcome == "heart attack") {
                 data[, 11] <- as.numeric(data[, 11])
                 outcome <- "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"
         }
@@ -88,13 +91,14 @@ best <- function(state,outcome) {
         newdata<- subset(data, State == state, select = c("Hospital.Name", "State", outcome))
         options(warn=-1) # so that the warning for NAs doesn't come
         row <- which.min(newdata[,3])
-        newdata[210,1]
+        newdata[row,1]
 }
 
-best("TXn","heart attack")
+best("AZ","heart failure")
 outcome <- "heart attack"
-state <- "TX"
+state <- "AZ"
 str(outcome)
+
 
 outcome <- "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"
 newdata<- subset(data, State == state, select = c("Hospital.Name", "State", outcome))
@@ -102,26 +106,3 @@ newdata
 
 ## from: http://stackoverflow.com/questions/13774773/check-whether-value-exist-in-one-data-frame-or-not
 state %in% newdata$State 
-
-
-
-
-
-
-
-
-
-best <- function(state,outcome) {
-        ## read outcome data
-        data <- read.csv("outcome-of-care-measures.csv",colClasses = "character")
-        
-        ## check that state and outcome are valid
-        if (state %in% data$State == TRUE) {
-                message("invalid state")
-                return()
-        }
-}
-best("ef","sdf")
-
-stop(paste(c("Error in best(",'"', state,'"', ", ",'"', outcome,'"', ") : invalid state"), collapse = ""),
-     call. = FALSE)
