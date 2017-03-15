@@ -1,6 +1,7 @@
-best <- function(state,outcome) {
+rankhospital <- function(state,outcome,rank) {
         ## read outcome data
-        data <- read.csv("outcome-of-care-measures.csv",colClasses = "character")
+        data <- read.csv("outcome-of-care-measures.csv", colClasses = "character",
+                         na.strings = "Not Available") %>% na.omit()
         
         ## check that state and outcome are valid
         if (state %in% data$State == FALSE) stop("invalid state")
@@ -25,9 +26,21 @@ best <- function(state,outcome) {
                 message("invalid outcome")
         }
         newdata<- subset(data, State == state, select = c("Hospital.Name", "State", outcome))
-        options(warn=-1) # so that the warning for NAs doesn't come
-        row <- which.min(newdata[,3])
-        newdata[row,1]
+        newdata_ordered <- newdata %>% arrange_(outcome,"Hospital.Name")
+        
+        if (rank == "best") {
+               output <- newdata_ordered[1,1]
+        }
+        
+        else if (rank == "worst") {
+                output <- tail(newdata_ordered[1],n=1)[,1]
+        }
+        
+        else {output <- newdata_ordered[rank,1]}
+        
+        output
 }
 
-best("MD","pneumonia")
+rankhospital("MD", "heart attack", "worst")
+rankhospital("TX", "heart failure", 4)
+rankhospital("MN", "heart attack", 5000)
